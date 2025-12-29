@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>NusaGo - Travel App Experience</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <nav id="navbar">
+      <div class="container nav-box">
+        <a href="#" class="logo"> <i class="fas fa-leaf"></i> NusaGo </a>
+        <div class="nav-menu" id="navMenu">
+          <a href="#" class="active">Home</a>
+          <a href="#promo">Promo</a>
+          <a href="#popular">Populer</a>
+
+          <div class="cart-menu" onclick="toggleCart()">
+            <i class="fas fa-shopping-cart"></i>
+            <span class="cart-badge" id="cartCount">0</span>
+          </div>
+          <a href="#" class="btn-login" onclick="openLogin()">Masuk / Daftar</a>
+        </div>
+        <div class="hamburger" onclick="toggleMenu()">
+          <i class="fas fa-bars"></i>
+        </div>
+      </div>
+    </nav>
+
+    <header class="hero">
+      <div class="hero-text">
+        <h1>Jelajahi Keajaiban<br />Nusantara & Dunia</h1>
+        <p>Satu aplikasi untuk semua kebutuhan perjalanan Anda.</p>
+      </div>
+      <img
+        src="https://images.unsplash.com/photo-1596422846543-75c6fc197f07?q=80&w=2000&auto=format&fit=crop"
+        class="hero-bg"
+        alt="Hero Background"
+      />
+      <div class="hero-overlay"></div>
+    </header>
+
+    <div class="search-wrapper container">
+      <div class="search-card">
+        <div class="service-icons">
+          <div class="icon-item active" onclick="setService('flight')">
+            <div class="icon-circle">
+              <i class="fas fa-plane-departure"></i>
+            </div>
+            <span>Pesawat</span>
+          </div>
+          <div class="icon-item" onclick="setService('hotel')">
+            <div class="icon-circle"><i class="fas fa-hotel"></i></div>
+            <span>Hotel</span>
+          </div>
+          <div class="icon-item" onclick="setService('train')">
+            <div class="icon-circle"><i class="fas fa-train"></i></div>
+            <span>Kereta</span>
+          </div>
+          <div class="icon-item" onclick="setService('event')">
+            <div class="icon-circle"><i class="fas fa-ticket-alt"></i></div>
+            <span>To Do</span>
+          </div>
+        </div>
+
+        <form id="bookingForm">
+          <div class="form-grid">
+            <div class="form-group">
+              <label>Dari / Lokasi</label>
+              <div class="input-container">
+                <i class="fas fa-map-marker-alt"></i>
+                <input
+                  type="text"
+                  id="inputFrom"
+                  placeholder="Jakarta (JKT)"
+                  value="Jakarta"
+                />
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Ke Tujuan</label>
+              <div class="input-container">
+                <i class="fas fa-location-arrow"></i>
+                <input type="text" id="inputTo" placeholder="Mau kemana?" />
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Pergi</label>
+              <div class="input-container">
+                <i class="fas fa-calendar-alt"></i>
+                <input type="date" />
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Penumpang</label>
+              <div class="input-container">
+                <i class="fas fa-user"></i>
+                <input type="number" value="1" min="1" />
+              </div>
+            </div>
+          </div>
+          <button type="submit" class="btn-search">
+            Cari Sekarang <i class="fas fa-arrow-right"></i>
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <section id="promo" class="container section-gap">
+      <div class="section-head">
+        <h2>Promo Spesial 🔥</h2>
+        <a href="#">Lihat Semua</a>
+      </div>
+      <div class="promo-scroller">
+        <div
+          class="promo-card"
+          style="background: linear-gradient(45deg, #10b981, #059669)"
+        >
+          <div class="promo-txt">
+            <h3>Diskon Pengguna Baru</h3>
+            <p>Potongan hingga Rp 500rb</p>
+            <button>Klaim</button>
+          </div>
+          <i class="fas fa-gift promo-icon"></i>
+        </div>
+        <div
+          class="promo-card"
+          style="background: linear-gradient(45deg, #f59e0b, #d97706)"
+        >
+          <div class="promo-txt">
+            <h3>Flash Sale Hotel</h3>
+            <p>Mulai Rp 200rb-an</p>
+            <button>Cek</button>
+          </div>
+          <i class="fas fa-stopwatch promo-icon"></i>
+        </div>
+        <div
+          class="promo-card"
+          style="background: linear-gradient(45deg, #3b82f6, #2563eb)"
+        >
+          <div class="promo-txt">
+            <h3>Liburan ke Jepang</h3>
+            <p>Paket Bundling Murah</p>
+            <button>Lihat</button>
+          </div>
+          <i class="fas fa-plane promo-icon"></i>
+        </div>
+      </div>
+    </section>
+
+    <section
+      id="searchResults"
+      class="container section-gap"
+      style="display: none"
+    >
+      <div class="section-head">
+        <h2 id="resultTitle">Hasil Pencarian</h2>
+      </div>
+      <div class="loading-bar" id="loader"></div>
+      <div id="resultCards" class="grid-card-layout"></div>
+    </section>
+
+    <section id="popular" class="container section-gap">
+      <div class="section-head">
+        <h2>Destinasi Trending</h2>
+        <p>Paling banyak dicari minggu ini</p>
+      </div>
+      <div class="grid-card-layout">
+        <div class="card-destination">
+          <div class="img-box">
+            <img
+              src="https://images.unsplash.com/photo-1516483638261-f4dbaf036963?q=80"
+              alt="Cinque Terre"
+            />
+            <span class="badge">Eropa</span>
+          </div>
+          <div class="card-details">
+            <h3>Cinque Terre, Italia</h3>
+            <p>Rp 12.500.000</p>
+            <div class="rating">⭐ 4.9</div>
+          </div>
+        </div>
+        <div class="card-destination">
+          <div class="img-box">
+            <img
+              src="https://images.unsplash.com/photo-1537996194471-e657df975ab4?q=80"
+              alt="Bali"
+            />
+            <span class="badge">Lokal</span>
+          </div>
+          <div class="card-details">
+            <h3>Ubud, Bali</h3>
+            <p>Rp 1.200.000</p>
+            <div class="rating">⭐ 4.8</div>
+          </div>
+        </div>
+        <div class="card-destination">
+          <div class="img-box">
+            <img
+              src="https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?q=80"
+              alt="Tokyo"
+            />
+            <span class="badge">Asia</span>
+          </div>
+          <div class="card-details">
+            <h3>Tokyo, Jepang</h3>
+            <p>Rp 8.700.000</p>
+            <div class="rating">⭐ 4.9</div>
+          </div>
+        </div>
+        <div class="card-destination">
+          <div class="img-box">
+            <img
+              src="https://images.unsplash.com/photo-1502602898657-3e91760cbb34?q=80"
+              alt="Paris"
+            />
+            <span class="badge">Eropa</span>
+          </div>
+          <div class="card-details">
+            <h3>Paris, Prancis</h3>
+            <p>Rp 15.000.000</p>
+            <div class="rating">⭐ 4.7</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div id="loginModal" class="modal-overlay">
+      <div class="modal-box">
+        <span class="close-btn" onclick="closeLogin()">&times;</span>
+        <h2>Selamat Datang!</h2>
+        <p>Masuk untuk akses fitur lengkap NusaGo.</p>
+        <input
+          type="text"
+          class="modal-input"
+          placeholder="Email atau No. HP"
+        />
+        <input type="password" class="modal-input" placeholder="Password" />
+        <button class="btn-full" onclick="alert('Login berhasil!')">
+          Masuk
+        </button>
+        <p class="small-text">Atau masuk dengan Google</p>
+      </div>
+    </div>
+
+    <div id="cartModal" class="modal-overlay">
+      <div class="modal-box cart-box">
+        <div class="cart-header">
+          <h2>Keranjang Pesanan</h2>
+          <span class="close-btn" onclick="toggleCart()">&times;</span>
+        </div>
+
+        <div id="cartItems" class="cart-items-container">
+          <div class="empty-state">
+            <i class="fas fa-shopping-basket"></i>
+            <p>Keranjang masih kosong</p>
+          </div>
+        </div>
+
+        <div class="cart-footer">
+          <div class="total-row">
+            <span>Total Estimasi:</span>
+            <span id="cartTotal" class="total-price">Rp 0</span>
+          </div>
+          <button class="btn-full" onclick="checkout()">
+            Lanjut Pembayaran
+          </button>
+        </div>
+      </div>
+    </div>
+    <footer>
+      <div class="container footer-content">
+        <div class="brand">
+          <h3><i class="fas fa-leaf"></i> NusaGo</h3>
+          <p>Platform Travel Generasi Baru.</p>
+        </div>
+        <div class="links">
+          <a href="#">Tentang</a>
+          <a href="#">Karir</a>
+          <a href="#">Bantuan</a>
+        </div>
+      </div>
+    </footer>
+
+    <script src="script.js"></script>
+  </body>
+</html>
